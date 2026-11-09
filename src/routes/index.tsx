@@ -4,9 +4,9 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BHT Juice | Fresh Flavors, Naturally Refreshing" },
+      { title: "LETASORA | Fresh Flavors, Naturally Refreshing" },
       { name: "description", content: "Fresh fruit juices in Muyenga, Kampala. Order on WhatsApp." },
-      { property: "og:title", content: "BHT Juice | Fresh Flavors, Naturally Refreshing" },
+      { property: "og:title", content: "LETASORA | Fresh Flavors, Naturally Refreshing" },
       { property: "og:description", content: "Fresh fruit juices in Muyenga, Kampala. Order on WhatsApp." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
