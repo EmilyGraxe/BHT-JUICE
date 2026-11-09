@@ -8,7 +8,6 @@ const CONFIG = {
   whatsappNumber: '256778646842',
   phone: '+256 778 646842',
   location: 'Muyenga, Kampala',
-  formEndpoint: '',                // e.g. a Formspree URL; leave empty until you have one
   social: { Instagram: '', Facebook: '', TikTok: '' },
   autoplayMs: 6000
 };
@@ -247,15 +246,8 @@ function initForm() {
       if (res !== true && ok) { input.focus(); ok = false; }
     }
     if (!ok) return;
-    if (!CONFIG.formEndpoint) {
-      status.textContent = 'This form is not connected to a delivery service yet, so nothing was sent. Please use WhatsApp, phone or email instead.';
-      return;
-    }
-    try {
-      const r = await fetch(CONFIG.formEndpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
-      if (!r.ok) throw new Error();
-      status.textContent = 'Thank you. Your message was sent.'; form.reset();
-    } catch { status.textContent = 'Sorry, the message could not be sent. Please try again or contact us directly.'; }
+    openWhatsApp(`Hello BHT Juice, my name is ${form.elements.name.value.trim()} (${form.elements.contact.value.trim()}).\n\n${form.elements.message.value.trim()}`);
+    status.textContent = 'Opening WhatsApp so you can send your message.'; form.reset();
   });
 }
 

@@ -28,3 +28,4 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+- The site is plain HTML/CSS/JS in public/ (bht.html, style.css, script.js); / redirects to it. Why: user asked to keep the original static stack.
