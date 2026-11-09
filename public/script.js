@@ -37,7 +37,7 @@ const byId = id => PRODUCTS.find(p => p.id === id);
 
 /* Graceful image fallback: a branded illustration replaces any photo that fails to load */
 function fallbackArt(c1, c2, name) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c2}"/><stop offset="1" stop-color="${c1}"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><circle cx="610" cy="170" r="120" fill="#fff" opacity=".2"/><circle cx="610" cy="170" r="92" fill="#fff" opacity=".25"/><circle cx="150" cy="470" r="150" fill="#fff" opacity=".12"/><path d="M300 130h200l-24 330q-2 24-26 24h-100q-24 0-26-24z" fill="#fff" opacity=".35"/><path d="M312 230h176l-16 230q-2 24-26 24h-92q-24 0-26-24z" fill="${c1}"/><text x="400" y="545" text-anchor="middle" font-family="Georgia,serif" font-size="34" fill="#174D35">${name || 'BHT Juice'}</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c2}"/><stop offset="1" stop-color="${c1}"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><circle cx="610" cy="170" r="120" fill="#fff" opacity=".2"/><circle cx="610" cy="170" r="92" fill="#fff" opacity=".25"/><circle cx="150" cy="470" r="150" fill="#fff" opacity=".12"/><path d="M300 130h200l-24 330q-2 24-26 24h-100q-24 0-26-24z" fill="#fff" opacity=".35"/><path d="M312 230h176l-16 230q-2 24-26 24h-92q-24 0-26-24z" fill="${c1}"/><text x="400" y="545" text-anchor="middle" font-family="Georgia,serif" font-size="34" fill="#174D35">${name || 'LETASORA'}</text></svg>`;
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 document.addEventListener('error', e => {
@@ -111,7 +111,7 @@ function renderProducts(filter = 'all') {
 }
 function initFilters() {
   renderProducts();
-  $('#priceNote').textContent = CONFIG.pricesArePlaceholders ? 'Prices shown are sample placeholders and will be confirmed by BHT Juice when you order.' : '';
+  $('#priceNote').textContent = CONFIG.pricesArePlaceholders ? 'Prices shown are sample placeholders and will be confirmed by LETASORA when you order.' : '';
   $$('[data-filter]').forEach(b => b.addEventListener('click', () => {
     $$('[data-filter]').forEach(o => o.setAttribute('aria-pressed', o === b));
     renderProducts(b.dataset.filter);
@@ -136,20 +136,20 @@ function renderCart() {
   $('#clearCart').hidden = !rows.length;
   const wa = $('#waBtn'), num = CONFIG.whatsappNumber.replace(/\D/g, '');
   const lines = [...cart].map(([id, q]) => `- ${q} x ${byId(id).name} (${money(byId(id).price * q)})`);
-  const msg = `Hello BHT Juice, I'd like to order:\n${lines.join('\n')}\nSubtotal: ${money(total)}${CONFIG.pricesArePlaceholders ? ' (sample prices, please confirm)' : ''}\nPlease confirm availability and delivery details.`;
+  const msg = `Hello LETASORA, I'd like to order:\n${lines.join('\n')}\nSubtotal: ${money(total)}${CONFIG.pricesArePlaceholders ? ' (sample prices, please confirm)' : ''}\nPlease confirm availability and delivery details.`;
   const ready = rows.length && num;
   wa.setAttribute('aria-disabled', !ready);
   wa.href = ready ? `https://wa.me/${num}?text=${encodeURIComponent(msg)}` : '#';
   $('#cartNote').textContent = !num ? 'WhatsApp ordering is not configured yet. The business owner must add a number in js/script.js.'
-    : 'This prepares a message only. Your order is confirmed once BHT Juice replies. No payment is taken here.';
+    : 'This prepares a message only. Your order is confirmed once LETASORA replies. No payment is taken here.';
 }
 function waLink(msg) { return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`; }
 function openWhatsApp(msg) { window.open(waLink(msg), '_blank', 'noopener'); }
 function orderNow() {
-  if (!cart.size) return openWhatsApp("Hello BHT Juice, I'd like to place an order. What juices do you have available today?");
+  if (!cart.size) return openWhatsApp("Hello LETASORA, I'd like to place an order. What juices do you have available today?");
   let total = 0;
   const lines = [...cart].map(([id, q]) => { const p = byId(id); total += p.price * q; return `- ${q} x ${p.name} (${money(p.price * q)})`; });
-  openWhatsApp(`Hello BHT Juice, I'd like to order:\n${lines.join('\n')}\nTotal: ${money(total)}\nPlease confirm availability and delivery details.`);
+  openWhatsApp(`Hello LETASORA, I'd like to order:\n${lines.join('\n')}\nTotal: ${money(total)}\nPlease confirm availability and delivery details.`);
 }
 function add(id) { cart.set(id, (cart.get(id) || 0) + 1); renderCart(); toast(`${byId(id).name} added. Tap Order Now to send via WhatsApp`); }
 function openCart() {
@@ -166,7 +166,7 @@ function closeCart() {
 function initCart() {
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-add]'); if (a) return add(a.dataset.add);
-    const ord = e.target.closest('[data-order]'); if (ord) { e.preventDefault(); const p = byId(ord.dataset.order); return openWhatsApp(`Hello BHT Juice, I'd like to order ${p.name} (${money(p.price)}). Please confirm availability and delivery.`); }
+    const ord = e.target.closest('[data-order]'); if (ord) { e.preventDefault(); const p = byId(ord.dataset.order); return openWhatsApp(`Hello LETASORA, I'd like to order ${p.name} (${money(p.price)}). Please confirm availability and delivery.`); }
     if (e.target.closest('[data-open-cart]')) { closeMenu(); return orderNow(); }
     const inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]'), rm = e.target.closest('[data-rm]');
     if (inc) cart.set(inc.dataset.inc, cart.get(inc.dataset.inc) + 1);
@@ -246,7 +246,7 @@ function initForm() {
       if (res !== true && ok) { input.focus(); ok = false; }
     }
     if (!ok) return;
-    openWhatsApp(`Hello BHT Juice, my name is ${form.elements.name.value.trim()} (${form.elements.contact.value.trim()}).\n\n${form.elements.message.value.trim()}`);
+    openWhatsApp(`Hello LETASORA, my name is ${form.elements.name.value.trim()} (${form.elements.contact.value.trim()}).\n\n${form.elements.message.value.trim()}`);
     status.textContent = 'Opening WhatsApp so you can send your message.'; form.reset();
   });
 }
